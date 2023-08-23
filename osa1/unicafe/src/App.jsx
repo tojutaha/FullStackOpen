@@ -21,6 +21,14 @@ const Statistics = (props) => {
     return (props.good / count()) * 100
   }
 
+  if (count() <= 0) {
+    return (
+      <div>
+        No feedback given
+      </div>
+    )
+  }
+
   return (
     <div>
       <p>good {props.good}</p>
