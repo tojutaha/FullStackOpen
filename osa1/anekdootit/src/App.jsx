@@ -2,6 +2,33 @@ import { useState } from 'react'
 
 const Button = (props) => <button onClick={props.func}>{props.text}</button>
 
+const HighestVotes = (props) => {
+  const sum = props.points.reduce((accumulator, value) => accumulator + value, 0)
+  if (sum <= 0) {
+    return
+  }
+
+  const highest = () => {
+    let highestValue = 0
+    let highestIndex = 0
+    props.points.forEach((point, index) => {
+      if (point > highestValue) {
+        highestValue = point
+        highestIndex = index
+      }
+    })
+
+    return highestIndex
+  }
+
+  return (
+    <div>
+    <h1>Anecdote with most votes</h1>
+    {props.anecdotes[highest()]}
+    </div>
+  )
+}
+
 const App = () => {
 
   const anecdotes = [
@@ -32,12 +59,14 @@ const App = () => {
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
       <br />
       has {points[selected]} votes
       <br />
       <Button func={VoteButtonClicked} text="vote" />
       <Button func={NextButtonClicked} text="next anecdote" />
+      <HighestVotes anecdotes={anecdotes} points={points} />
     </div>
   )
 }
