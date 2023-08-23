@@ -3,6 +3,7 @@ import { useState } from 'react'
 const Button = (props) => <button onClick={props.func}>{props.text}</button>
 
 const App = () => {
+
   const anecdotes = [
     'If it hurts, do it more often.',
     'Adding manpower to a late software project makes it later!',
@@ -13,19 +14,30 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when dianosing patients.',
     'The only way to go fast, is to go well.'
   ]
-   
-  const [selected, setSelected] = useState(0)
 
-  const ButtonClicked = () => {
+  const [selected, setSelected] = useState(0)
+  const initialPoints = Array.from({length: anecdotes.length}, () => 0)
+  const [points, setPoints] = useState(initialPoints)
+
+  const NextButtonClicked = () => {
     const random = Math.floor(Math.random() * anecdotes.length)
     setSelected(random)
+  }
+
+  const VoteButtonClicked = () => {
+    const copy = [...points]
+    copy[selected] += 1
+    setPoints(copy)
   }
 
   return (
     <div>
       {anecdotes[selected]}
       <br />
-      <Button func={ButtonClicked} text="next anecdote" />
+      has {points[selected]} votes
+      <br />
+      <Button func={VoteButtonClicked} text="vote" />
+      <Button func={NextButtonClicked} text="next anecdote" />
     </div>
   )
 }
