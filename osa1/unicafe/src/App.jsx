@@ -2,7 +2,28 @@ import { useState } from 'react'
 
 const Button = (props) => <button onClick={props.func}>{props.text}</button>
 
-const StatisticsLine = (props) => <div>{props.text} {props.value}</div>
+const StatisticsLine = (props) => {
+  const tableStyle = {
+    width: '100%',
+    tableLayout: 'fixed',
+  };
+
+  const cellStyle = {
+    width:'auto',
+    border: '1px solid #000',
+  };
+
+  return (
+    <table style={tableStyle}>
+      <tbody>
+        <tr>
+          <td style={cellStyle}>{props.text}</td>
+          <td style={cellStyle}>{props.value}</td>
+        </tr>
+      </tbody>
+    </table>
+  )
+}
 
 const Statistics = (props) => {
 
@@ -24,14 +45,14 @@ const Statistics = (props) => {
       return 0
     }
     const sum = (props.good) + (props.bad * -1)
-    return sum / count();
+    return (sum / count()).toFixed(1);
   }
 
   const positive = () => {
     if (count() <= 0) {
       return 0
     }
-    return (props.good / count()) * 100
+    return ((props.good / count()) * 100).toFixed(1);
   }
 
   return (
