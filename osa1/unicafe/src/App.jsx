@@ -2,12 +2,23 @@ import { useState } from 'react'
 
 const Statistics = (props) => {
 
+  const count = () => {
+    return props.good + props.bad + props.neutral
+  }
+
   const average = () => {
-    return (props.good + props.bad + props.neutral) / props.count;
+    if (count() <= 0) {
+      return 0
+    }
+    const sum = (props.good) + (props.bad * -1)
+    return sum / count();
   }
 
   const positive = () => {
-    return 69
+    if (count() <= 0) {
+      return 0
+    }
+    return (props.good / count()) * 100
   }
 
   return (
@@ -26,16 +37,30 @@ const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
-  const [count, setCount] = useState(0)
+
+  const GoodClicked = () => {
+    console.log(good)
+    setGood(good + 1)
+  }
+
+  const NeutralClicked = () => {
+    console.log(neutral)
+    setNeutral(neutral + 1)
+  }
+
+  const BadClicked = () => {
+    console.log(bad)
+    setBad(bad + 1)
+  }
 
   return (
     <div>
       <h1>give feedback</h1>
-      <button>good</button>
-      <button>neutral</button>
-      <button>bad</button>
+      <button onClick={GoodClicked}>good</button>
+      <button onClick={NeutralClicked}>neutral</button>
+      <button onClick={BadClicked}>bad</button>
       <h1>statistics</h1>
-      <Statistics />
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )
 }
