@@ -39,17 +39,14 @@ const App = () => {
   const [bad, setBad] = useState(0)
 
   const GoodClicked = () => {
-    console.log(good)
     setGood(good + 1)
   }
 
   const NeutralClicked = () => {
-    console.log(neutral)
     setNeutral(neutral + 1)
   }
 
   const BadClicked = () => {
-    console.log(bad)
     setBad(bad + 1)
   }
 
