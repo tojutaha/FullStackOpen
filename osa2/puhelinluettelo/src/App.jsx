@@ -1,23 +1,25 @@
 import { useState } from 'react'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas',
-      number: '040-1231244' }
-  ]) 
+    const [persons, setPersons] = useState([
+    { name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
+  ])
+
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [originalPersons, setOriginalPersons] = useState(persons)
+  const [filterInput, setFilterInput] = useState("")
 
   const addPerson = (event) => {
     event.preventDefault()
-    //console.log(newName)
-    //console.log(persons)
     const newEntry = {
       name: newName,
       number: newNumber,
     }
 
-    //console.log(persons.some(newEntry => newEntry.name === newName))
     const exists = persons.some(newEntry => newEntry.name === newName)
     if (exists) {
       alert(`${newName} is already added to phonebook`)
@@ -29,7 +31,6 @@ const App = () => {
   }
 
   const handleNameChange = (event) => {
-    //console.log(event.target.value)
     setNewName(event.target.value)
   }
 
@@ -37,9 +38,33 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
+  const handleFilterChange = (event) => {
+    const inputValue = event.target.value.toLowerCase()
+    if (inputValue.length === 0) {
+      setPersons(originalPersons)
+    } else {
+      setFilterInput(inputValue)
+      const filter = originalPersons.filter(person => person.name.toLowerCase().includes(inputValue))
+      setPersons(filter)
+    }
+  }
+
+  const handleBackSpace =() => {
+    const newFilterInput = filterInput.slice(0, -1)
+    setFilterInput(newFilterInput)
+    const filter = originalPersons.filter(person => person.name.toLowerCase().includes(newFilterInput));
+    setPersons(filter);
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
+      filter shown with <input onChange={handleFilterChange} onKeyDown={(e) => {
+        if (e.key === "Backspace") {
+          handleBackSpace()
+        }
+      }} />
+      <h2>add a new</h2>
       <form onSubmit={addPerson}>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
