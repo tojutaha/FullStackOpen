@@ -27,6 +27,7 @@ const App = () => {
       setPersons(persons.concat(newEntry))
       setNewName('')
       setNewNumber('')
+      setOriginalPersons(originalPersons.concat(newEntry))
     }
   }
 
@@ -39,6 +40,7 @@ const App = () => {
   }
 
   const handleFilterChange = (event) => {
+    event.preventDefault()
     const inputValue = event.target.value.toLowerCase()
     if (inputValue.length === 0) {
       setPersons(originalPersons)
@@ -82,7 +84,6 @@ const App = () => {
           <li key={person.name}>{person.name} {person.number}</li>
         ))}
       </ul>
-      <div>debug: {newName}</div>
     </div>
   )
 
