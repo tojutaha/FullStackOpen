@@ -3,6 +3,7 @@ import Persons from './components/Person'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import axios from 'axios'
+const baseURL = "http://localhost:3001/persons"
 
 const App = () => {
   
@@ -14,7 +15,7 @@ const App = () => {
 
   const hook = () => {
     axios
-    .get("http://localhost:3001/persons")
+    .get(baseURL)
     .then(response => {
       console.log("Promise fulfilled")
       setPersons(response.data)
@@ -33,10 +34,15 @@ const App = () => {
     if (exists) {
       alert(`${newName} is already added to phonebook`)
     } else {
-      setPersons(persons.concat(newEntry))
-      setNewName('')
-      setNewNumber('')
-      setOriginalPersons(originalPersons.concat(newEntry))
+      axios
+      .post(baseURL, newEntry)
+      .then(response => {
+        console.log(response.data)
+        setPersons(persons.concat(newEntry))
+        setNewName('')
+        setNewNumber('')
+        setOriginalPersons(originalPersons.concat(newEntry))
+      })
     }
   }
 
