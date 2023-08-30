@@ -17,5 +17,11 @@ const getAll = () => {
       // Nothing to return
     })
   }
+
+  const updatePerson = (id, newObject) => {
+    const request = axios.put(`${baseUrl}/${id}`, newObject)
+    return request.then(() => {
+    })
+  }
   
-  export default { getAll, createPerson, deletePerson }
+  export default { getAll, createPerson, deletePerson, updatePerson }

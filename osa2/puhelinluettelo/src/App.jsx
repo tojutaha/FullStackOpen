@@ -30,7 +30,18 @@ const App = () => {
 
     const exists = persons.some(newEntry => newEntry.name === newName)
     if (exists) {
-      alert(`${newName} is already added to phonebook`)
+      const foundPerson = persons.find(person => person.name === newName)
+      if (window.confirm(`${newEntry.name} is already added to phonebook, replace the old number with a new one?`)) {
+        personService
+          .updatePerson(foundPerson.id, newEntry)
+          .then(() => {
+            const newPersons = persons.map(person => person.id === foundPerson.id ? { ...person, number: newNumber } : { ...person,})
+            setPersons(newPersons)
+            setOriginalPersons(persons)
+          })
+      } else {
+        return;
+      }
     } else {
       personService
         .createPerson(newEntry)
@@ -52,8 +63,7 @@ const App = () => {
       personService
         .deletePerson(id)
         .then(() => {
-          const updatedPersons = persons.filter(person => person.id !== id)
-          setPersons(updatedPersons)
+          setPersons(persons.filter(person => person.id !== id))
           setOriginalPersons(persons)
         })
         .catch(error => {
