@@ -33,12 +33,31 @@ const App = () => {
       alert(`${newName} is already added to phonebook`)
     } else {
       personService
-        .create(newEntry)
+        .createPerson(newEntry)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
           setOriginalPersons(originalPersons.concat(returnedPerson))
+        })
+        .catch(error => {
+          console.log("Error:", error)
+        })
+    }
+  }
+
+  const deletePerson = (person) => {
+    if (window.confirm(`Delete ${person.name} ?`)) {
+      const id = person.id
+      personService
+        .deletePerson(id)
+        .then(() => {
+          const updatedPersons = persons.filter(person => person.id !== id)
+          setPersons(updatedPersons)
+          setOriginalPersons(persons)
+        })
+        .catch(error => {
+          console.log("Error:", error)
         })
     }
   }
@@ -76,7 +95,7 @@ const App = () => {
       <h2>add a new</h2>
       <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <Persons persons={persons} />
+      <Persons persons={persons} deletePerson={deletePerson} />
     </div>
   )
 
