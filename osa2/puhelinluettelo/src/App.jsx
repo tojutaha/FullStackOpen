@@ -3,6 +3,7 @@ import Persons from './components/Person'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import personService from "./services/persons" 
+import Notification from './components/Notification'
 
 const App = () => {
   
@@ -11,6 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [originalPersons, setOriginalPersons] = useState(persons)
   const [filterInput, setFilterInput] = useState("")
+  const [notificationMessage, setNotificationMessage] = useState()
 
   useEffect(() => {
     personService
@@ -38,6 +40,12 @@ const App = () => {
             const newPersons = persons.map(person => person.id === foundPerson.id ? { ...person, number: newNumber } : { ...person,})
             setPersons(newPersons)
             setOriginalPersons(persons)
+            setNotificationMessage(
+              `Updated ${foundPerson.name}`
+            )
+            setTimeout(() => {
+              setNotificationMessage(null)
+            }, 5000)
           })
       } else {
         return;
@@ -50,6 +58,12 @@ const App = () => {
           setNewName('')
           setNewNumber('')
           setOriginalPersons(originalPersons.concat(returnedPerson))
+          setNotificationMessage(
+            `Added ${newEntry.name}`
+          )
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
         })
         .catch(error => {
           console.log("Error:", error)
@@ -65,6 +79,12 @@ const App = () => {
         .then(() => {
           setPersons(persons.filter(person => person.id !== id))
           setOriginalPersons(persons)
+          setNotificationMessage(
+            `Deleted ${person.name}`
+          )
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
         })
         .catch(error => {
           console.log("Error:", error)
@@ -101,6 +121,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notificationMessage}/>
       <Filter handleFilterChange={handleFilterChange} handleBackSpace={handleBackSpace} />
       <h2>add a new</h2>
       <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
