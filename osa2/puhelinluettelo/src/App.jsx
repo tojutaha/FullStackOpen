@@ -13,6 +13,7 @@ const App = () => {
   const [originalPersons, setOriginalPersons] = useState(persons)
   const [filterInput, setFilterInput] = useState("")
   const [notificationMessage, setNotificationMessage] = useState()
+  const [notificationType, setNotificationType] = useState()
 
   useEffect(() => {
     personService
@@ -40,6 +41,9 @@ const App = () => {
             const newPersons = persons.map(person => person.id === foundPerson.id ? { ...person, number: newNumber } : { ...person,})
             setPersons(newPersons)
             setOriginalPersons(persons)
+            setNewName('')
+            setNewNumber('')
+            setNotificationType("success")
             setNotificationMessage(
               `Updated ${foundPerson.name}`
             )
@@ -58,6 +62,7 @@ const App = () => {
           setNewName('')
           setNewNumber('')
           setOriginalPersons(originalPersons.concat(returnedPerson))
+          setNotificationType("success")
           setNotificationMessage(
             `Added ${newEntry.name}`
           )
@@ -79,6 +84,7 @@ const App = () => {
         .then(() => {
           setPersons(persons.filter(person => person.id !== id))
           setOriginalPersons(persons)
+          setNotificationType("success")
           setNotificationMessage(
             `Deleted ${person.name}`
           )
@@ -87,6 +93,14 @@ const App = () => {
           }, 5000)
         })
         .catch(error => {
+          setNotificationType("error")
+          setNotificationMessage(
+            `Information of ${person.name} has already been removed from server`
+          )
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
+          setPersons(persons.filter(person => person.id !== id))
           console.log("Error:", error)
         })
     }
@@ -121,7 +135,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notificationMessage}/>
+      <Notification message={notificationMessage} notificationType={notificationType}/>
       <Filter handleFilterChange={handleFilterChange} handleBackSpace={handleBackSpace} />
       <h2>add a new</h2>
       <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
