@@ -1,14 +1,29 @@
-const Country = ({ countries, filterInput }) => {
-  //console.log(countries);
-  //console.log(countries[0].name.common);
-  //console.log(countries.length);
-  //console.log(filterInput)
+const Country = ({ countries, setCountries }) => {
 
   if (countries.length > 10) {
     return (
       <>
       Too many matches, specify another filter
       </>
+    )
+  }
+
+  let i = 0;
+  if (countries.length <= 10 && countries.length > 1) {
+    return (
+    <ul>
+      {countries.map((country) => (
+        <li key={i++}>
+          {country.name.common}
+          <button onClick={() => {
+            const newCountries = countries.filter(c => c.name.common === country.name.common)
+            setCountries(newCountries)
+          }}>
+            show
+          </button>
+        </li>
+      ))}
+    </ul>
     )
   }
 
@@ -32,7 +47,6 @@ const Country = ({ countries, filterInput }) => {
     )
   }
 
-  let i = 0;
   return (
     <ul>
       {countries.map((country) => (

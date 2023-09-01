@@ -38,7 +38,7 @@ function App() {
   return (
     <div>
       <Filter handleFilterChange={handleFilterChange} />
-      <Country countries={countries} filterInput={filterInput}/>
+      <Country countries={countries} setCountries={setCountries}/>
     </div>
   )
 }
