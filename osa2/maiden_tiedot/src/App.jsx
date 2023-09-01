@@ -17,21 +17,16 @@ function App() {
         setOriginalCountries(response.data)
     })
   }, [])
-  //console.log("Countries", countries)
-  //console.log("Original",originalCountries)
 
   const handleFilterChange = (event) => {
     const inputValue = event.target.value.toLowerCase()
-    //console.log("inputValue", inputValue)
+
     if (inputValue.length === 0) {
       setCountries(originalCountries)
-      //console.log("Countries", countries)
-      //console.log("Original", originalCountries)
     } else {
       setFilterInput(inputValue)
       const filter = originalCountries.filter(country => country.name.common.toLowerCase().includes(inputValue))
       setCountries(filter)
-      //console.log("Filter", filter)
     }
   }
 
