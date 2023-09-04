@@ -29,6 +29,16 @@ app.get("/", (req, res,) => {
     res.send("Nothing to see here.")
 })
 
+app.get("/info/", (req, res,) => {
+    let currentDate = new Date()
+    const html = `
+        <p>Phonebook has info for ${persons.length} people</p>
+        <p>${currentDate.toString()}</p>
+    `
+    res.send(html)
+})
+
+
 app.get("/api/persons/", (req, res) => {
     res.json(persons)
 })
