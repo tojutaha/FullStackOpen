@@ -21,6 +21,7 @@ const getAll = () => {
   const updatePerson = (id, newObject) => {
     const request = axios.put(`${baseUrl}/${id}`, newObject)
     return request.then(() => {
+      // Nothing to return
     })
   }
   
