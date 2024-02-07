@@ -2,21 +2,18 @@ require("dotenv").config()
 const express = require("express")
 const morgan = require("morgan")
 const cors = require("cors")
-const Person = require("./models/person")
-
 const app = express()
+const Person = require("./models/person")
 
 app.use(express.static("dist"))
 app.use(express.json())
 app.use(cors())
 
-////////////////////
-// morgan
 morgan.token('response-json', function (req, res) {
   if (req.method === "GET") {
     return ""
   }
-  // Log for post, delete, put and patch
+
   return JSON.stringify(req.body)
 })
 
@@ -40,11 +37,7 @@ app.get("/api/persons/", (req, res) => {
 app.get("/api/persons/:id", (req, res, next) => {
   Person.findById(req.params.id)
     .then(person => {
-      if (person) {
         res.json(person)
-      } else {
-        res.status(404).end()
-      }
     })
     .catch(err => next(err))
 })
@@ -54,48 +47,33 @@ app.delete("/api/persons/:id", (req, res, next) => {
     .then(person => {
       res.status(204).end()
     })
-    .catch(error = next(error))
+  .catch(error => next(error))
 })
 
-app.post("/api/persons", (req, res) => {
+app.post("/api/persons", (req, res, next) => {
   const body = req.body
-  if (!body.name) {
+  if (!body.name || !body.number) {
     return res.status(400).json({
-      error: "name missing"
+      error: "name or number cannot be empty"
     })
   }
 
-  /*
-  const exists = persons.some(person => person.name === body.name)
-  if (exists) {
-      return res.status(400).json({
-          error: "name must be unique"
-      })
-  }
-  */
-
-  if (!body.number) {
-    return res.status(400).json({
-      error: "number missing"
-    })
-  }
-
-  const person = new Person({
+  const person = {
     name: body.name,
     number: body.number,
-  })
+  }
 
-  person.save().then(savedPerson => {
-    res.json(savedPerson)
-  })
+  Person.findOneAndUpdate({name: body.name }, person, {new: true, upsert: true})
+    .then(updatedPerson => {
+      res.json(updatedPerson)
+    })
+  .catch(error => next(error))
 })
 
-////////////////////
-// Error handling
 const unknownEndpoint = (req, res) => {
   res.status(404).send({ error: 'unknown endpoint' })
 }
-// olemattomien osoitteiden käsittely
+
 app.use(unknownEndpoint)
 
 const errorHandler = (error, req, res, next) => {
@@ -107,11 +85,9 @@ const errorHandler = (error, req, res, next) => {
 
   next(error)
 }
-// virheellisten pyyntöjen käsittely
+
 app.use(errorHandler)
 
-////////////////////
-// Run app
 const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
