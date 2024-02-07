@@ -37,7 +37,7 @@ if (process.argv.length == 3) {
     })
 
     note.save().then(result => {
-        console.log("note saved!")
+        console.log(`added ${process.argv[3]} number ${process.argv[4]} to phonebook`)
         mongoose.connection.close()
     })
 } else {
