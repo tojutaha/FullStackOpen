@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import noteservice from './services/notes'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import Note from './components/Note'
 import Footer from './components/footer'
 import LoginForm from "./components/Login"
+import Togglable from './components/Togglable'
+import NoteForm from './components/Noteform'
 
-function App() {
-  const [loginVisible, setLoginVisible] = useState(false)
+const App = () => {
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
@@ -15,14 +16,8 @@ function App() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-
-  useEffect(() => {
-    noteservice
-      .getAll()
-      .then(initialNotes => {
-        setNotes(initialNotes)
-      })
-  }, [])
+  const [loginVisible, setLoginVisible] = useState(false)
+  const noteFormRef = useRef()
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
@@ -31,6 +26,14 @@ function App() {
       setUser(user)
       noteservice.setToken(user.token)
     }
+  }, [])
+
+  useEffect(() => {
+    noteservice
+      .getAll()
+      .then(initialNotes => {
+        setNotes(initialNotes)
+      })
   }, [])
 
   const toggleImportanceOf = (id) => {
@@ -53,24 +56,14 @@ function App() {
       })
   }
 
-  const addNote = (event) => {
-    event.preventDefault()
-    const noteObject = {
-      content: newNote,
-      important: Math.random() > 0.5,
-    }
-
+  const addNote = (noteObject) => {
+    noteFormRef.current.toggleVisibility()
     noteservice
       .create(noteObject)
       .then(returnedNote => {
         setNotes(notes.concat(returnedNote))
-        setNewNote("")
       })
   }
-
-  const notesToShow = showAll
-    ? notes
-    : notes.filter(note => note.important)
 
   const handleNoteChange = (event) => {
     setNewNote(event.target.value)
@@ -105,6 +98,10 @@ function App() {
     window.localStorage.removeItem('loggedNoteappUser')
     window.location.reload()
   }
+
+  const notesToShow = showAll
+    ? notes
+    : notes.filter(note => note.important)
 
   const loginForm = () => {
 
@@ -148,8 +145,9 @@ function App() {
       {!user && loginForm()}
       {user && <div>
         <p>{user.name} logged in</p>
-        <button onClick={handleLogout}>logout</button>
-        {noteForm()}
+        <Togglable buttonLabel="new note" ref={noteFormRef}>
+        <NoteForm createNote={addNote} />
+        </Togglable>
         </div>
       }
 

@@ -20,7 +20,7 @@ const noteSchema = new mongoose.Schema({
 
 const Note = mongoose.model('Note', noteSchema)
 
-if(1)
+if(0)
 {
   const note = new Note({
     //content: 'HTML is Easy',
@@ -35,7 +35,7 @@ if(1)
   })
 }
 
-if(0)
+if(1)
 {
   Note.find({}).then(result => {
     result.forEach(note => {
