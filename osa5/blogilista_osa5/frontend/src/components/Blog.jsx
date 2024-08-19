@@ -4,24 +4,6 @@ const Blog = ({ updateBlog, deleteBlog, blog }) => {
 
   const [visible, setVisible] = useState(false)
 
-  const hiddenStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-    display: visible ? 'none' : ''
-  }
-
-  const viewStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-    display: visible ? '' : 'none'
-  }
-
   const toggleVisible = () => {
     setVisible(!visible)
   }
@@ -40,20 +22,23 @@ const Blog = ({ updateBlog, deleteBlog, blog }) => {
 
   return (
     <div>
-      <div style={hiddenStyle}>
-        {blog.title} {blog.author} <button onClick={toggleVisible}>View</button>
-      </div>
-      <div style={viewStyle}>
-        {blog.title} {blog.author} <button onClick={toggleVisible}>Hide</button>
-        <br />
-        {blog.url}
-        <br />
-        likes {blog.likes} <button onClick={handleLikeButton}>Like</button>
-        <br />
-        {blog.author}
-        <br />
-        <button onClick={handleDeleteButton}>Remove</button>
-      </div>
+      {visible ? (
+        <div>
+          {blog.title} {blog.author} <button onClick={toggleVisible}>Hide</button>
+          <br />
+          {blog.url}
+          <br />
+          likes {blog.likes} <button onClick={handleLikeButton}>Like</button>
+          <br />
+          {blog.author}
+          <br />
+          <button onClick={handleDeleteButton}>Remove</button>
+        </div>
+      ) : (
+        <div>
+          {blog.title} {blog.author} <button onClick={toggleVisible}>View</button>
+        </div>
+      )}
     </div>
   )
 }
