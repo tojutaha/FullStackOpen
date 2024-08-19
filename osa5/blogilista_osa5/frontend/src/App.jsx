@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
 import Blog from './components/Blog'
 import BlogService from './services/blogs'
 import LoginService from './services/login'
@@ -79,6 +80,14 @@ function App() {
     </form>
   )
 
+  // loginForm.propTypes = {
+  //   handleSubmit: PropTypes.func.isRequired,
+  //   handleUsernameChange: PropTypes.func.isRequired,
+  //   handlePasswordChange: PropTypes.func.isRequired,
+  //   username: PropTypes.string.isRequired,
+  //   password: PropTypes.string.isRequired
+  // }
+  //
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     window.location.reload()
@@ -106,7 +115,7 @@ function App() {
   const updateBlog = (id, newBlog) => {
     BlogService.update(id, newBlog)
       .then(returnedBlog => {
-        setBlogs(blogs.map(blog => (blog.id === id) ? returnedBlog : blog));
+        setBlogs(blogs.map(blog => (blog.id === id) ? returnedBlog : blog))
         setNotificationType('success')
         setNotificationMessage(`Updated blog ${newBlog.title} by ${newBlog.author} added`)
         setTimeout(() => {
@@ -125,7 +134,7 @@ function App() {
   const deleteBlog = (blogObject) => {
     BlogService.remove(blogObject.id)
       .then(() => {
-        setBlogs(blogs.filter(blog => blog.id !== blogObject.id));
+        setBlogs(blogs.filter(blog => blog.id !== blogObject.id))
         setNotificationType('success')
         setNotificationMessage(`removed blog ${blogObject.title} by ${blogObject.author}`)
         setTimeout(() => {
@@ -143,7 +152,7 @@ function App() {
 
   const renderBlogs = () => {
     // Sort by likes
-    const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
+    const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes)
     return (
       <div>
         {sortedBlogs.map(blog =>
@@ -160,13 +169,13 @@ function App() {
 
       {!user && loginForm()}
       {user && <div>
-        {user.name} logged in 
+        {user.name} logged in
         <button onClick={handleLogout}>logout</button>
         <Togglable buttonLabel="Create new blog" ref={blogFormRef}>
-        <BlogForm createBlog={addBlog} userName={user} />
+          <BlogForm createBlog={addBlog} userName={user} />
         </Togglable>
         {renderBlogs()}
-        </div>
+      </div>
       }
 
     </div>

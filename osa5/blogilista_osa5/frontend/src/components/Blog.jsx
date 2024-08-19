@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from 'react'
 
 const Blog = ({ updateBlog, deleteBlog, blog }) => {
 
@@ -27,15 +27,14 @@ const Blog = ({ updateBlog, deleteBlog, blog }) => {
   }
 
   const handleLikeButton = () => {
-    const newBlog = { ...blog, likes: blog.likes + 1 };
+    const newBlog = { ...blog, likes: blog.likes + 1 }
     updateBlog(blog.id, newBlog)
   }
 
   const handleDeleteButton = () => {
     const msg = `Remove blog ${blog.title} by ${blog.author}`
-    if(window.confirm(msg))
-    {
-      deleteBlog(blog);
+    if (window.confirm(msg)) {
+      deleteBlog(blog)
     }
   }
 
