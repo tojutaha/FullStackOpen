@@ -22,7 +22,7 @@ const blogSchema = mongoose.Schema({
 
 const Blog = mongoose.model('Blog', blogSchema)
 
-if(1)
+if(0)
 {
   const blog = new Blog({
     // title: 'React patterns',
@@ -62,7 +62,7 @@ if(1)
   })
 }
 
-if(0)
+if(1)
 {
   Blog.find({}).then(result => {
     result.forEach(note => {

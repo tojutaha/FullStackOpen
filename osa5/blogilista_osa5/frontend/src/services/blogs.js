@@ -1,5 +1,7 @@
 import axios from 'axios'
-const baseUrl = '/api/blogs'
+// const baseUrl = '/api/blogs'
+// TODO: Figure out why on linux, this wants full addr
+const baseUrl = 'http://localhost:27017/api/blogs'
 
 let token = null
 
@@ -25,4 +27,12 @@ const update = (id, newObject) => {
   return request.then(response => response.data)
 }
 
-export default { getAll, create, update, setToken }
+const remove = (id) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  const request = axios.delete(`${baseUrl}/${id}`, config)
+  return request.then(response => response.data)
+}
+
+export default { getAll, create, update, remove, setToken }

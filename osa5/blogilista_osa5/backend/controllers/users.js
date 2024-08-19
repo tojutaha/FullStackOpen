@@ -31,7 +31,7 @@ usersRouter.post('/', async (request, response) => {
     const savedUser = await user.save()
     response.status(201).json(savedUser)
   } catch(error) {
-    //console.log(error)
+
     if(error.name === 'MongoServerError' && error.code === 11000) {
       return response.status(400).json({ error: 'username must be unique' })
     } else {
