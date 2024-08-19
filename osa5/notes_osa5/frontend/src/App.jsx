@@ -4,7 +4,7 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import Note from './components/Note'
 import Footer from './components/footer'
-import LoginForm from "./components/Login"
+import LoginForm from './components/Login'
 import Togglable from './components/Togglable'
 import NoteForm from './components/Noteform'
 
@@ -21,7 +21,7 @@ const App = () => {
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
-    if(loggedUserJSON) {
+    if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
       noteservice.setToken(user.token)
@@ -37,7 +37,7 @@ const App = () => {
   }, [])
 
   const toggleImportanceOf = (id) => {
-    const note = notes.find(n => n.id == id)
+    const note = notes.find(n => n.id === id)
     const changedNote = { ...note, important: !note.important }
 
     noteservice
@@ -117,8 +117,8 @@ const App = () => {
           <LoginForm
             username={username}
             password={password}
-            handleUsernameChange={({target}) => setUsername(target.value)}
-            handlePasswordChange={({target}) => setPassword(target.value)}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
             handleSubmit={handleLogin}
           />
           <button onClick={() => setLoginVisible(false)}>cancel</button>
@@ -146,14 +146,14 @@ const App = () => {
       {user && <div>
         <p>{user.name} logged in</p>
         <Togglable buttonLabel="new note" ref={noteFormRef}>
-        <NoteForm createNote={addNote} />
+          <NoteForm createNote={addNote} />
         </Togglable>
-        </div>
+      </div>
       }
 
       <div>
         <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? "important" : "all"}
+          show {showAll ? 'important' : 'all'}
         </button>
       </div>
       <ul>
