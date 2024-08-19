@@ -2,9 +2,10 @@ import React from 'react';
 import '@testing-library/jest-dom'
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import Blog from './Blog';
+import Blog from './Blog'
+import BlogForm from './BlogForm'
 
-describe('', () => {
+describe('Blog tests', () => {
 
   const blog = {
     title: 'testTitle',
@@ -74,5 +75,32 @@ describe('', () => {
     await user.click(likeButton)
 
     expect(updateBlog.mock.calls).toHaveLength(2)
+  })
+
+  test('Create new blog', async () => {
+
+    const createBlog = jest.fn()
+    const userName = 'testUser'
+
+    render(<BlogForm createBlog={createBlog} userName={userName} />)
+
+    const user = userEvent.setup()
+
+    await user.type(screen.getByLabelText(/title/i), blog.title);
+    await user.type(screen.getByLabelText(/author/i), blog.author);
+    await user.type(screen.getByLabelText(/url/i), blog.url);
+
+    await user.click(screen.getByRole('button', { name: /create/i }));
+
+    expect(createBlog).toHaveBeenCalledWith({
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      user: userName
+    });
+
+    expect(screen.getByLabelText(/title/i).value).toBe('');
+    expect(screen.getByLabelText(/author/i).value).toBe('');
+    expect(screen.getByLabelText(/url/i).value).toBe('');
   })
 })
