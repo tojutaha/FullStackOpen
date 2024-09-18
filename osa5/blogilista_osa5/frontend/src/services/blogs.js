@@ -1,7 +1,8 @@
 import axios from 'axios'
 // const baseUrl = '/api/blogs'
 // TODO: Figure out why on linux, this wants full addr
-const baseUrl = 'http://localhost:27017/api/blogs'
+// const baseUrl = 'http://localhost:27017/api/blogs'
+const baseUrl = '/api/blogs'
 
 let token = null
 
