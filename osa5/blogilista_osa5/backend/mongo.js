@@ -7,8 +7,8 @@ if (process.argv.length < 3) {
 
 const password = process.argv[2]
 
-//const url = `mongodb+srv://tomihalko:${password}@cluster0.fgsgs5a.mongodb.net/testBlogiLista?retryWrites=true&w=majority`
-const url = `mongodb+srv://tomihalko:${password}@cluster0.fgsgs5a.mongodb.net/Blogilista?retryWrites=true&w=majority`
+const url = `mongodb+srv://tomihalko:${password}@cluster0.fgsgs5a.mongodb.net/testBlogiLista?retryWrites=true&w=majority`
+//const url = `mongodb+srv://tomihalko:${password}@cluster0.fgsgs5a.mongodb.net/Blogilista?retryWrites=true&w=majority`
 
 mongoose.set('strictQuery', false)
 mongoose.connect(url)
@@ -62,7 +62,7 @@ if(0)
   })
 }
 
-if(1)
+if(0)
 {
   Blog.find({}).then(result => {
     result.forEach(note => {
