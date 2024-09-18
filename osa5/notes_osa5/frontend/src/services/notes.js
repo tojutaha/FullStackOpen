@@ -1,5 +1,7 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:27017/api/notes'
+// TODO: Figure out why on linux, this wants full addr
+// const baseUrl = 'http://localhost:27017/api/notes'
+const baseUrl = '/api/notes'
 
 let token = null
 
