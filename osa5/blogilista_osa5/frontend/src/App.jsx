@@ -150,7 +150,7 @@ function App() {
     return (
       <div>
         {sortedBlogs.map(blog =>
-          <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} />
+          <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user} />
         )}
       </div>
     )

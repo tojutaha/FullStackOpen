@@ -65,6 +65,12 @@ describe('Blogi lista', () => {
       await expect(page.getByText('removed blog title by author')).toBeVisible()
     })
 
+    test('only user that created the blog can see the remove button', async ({ page }) => {
+      await createBlog(page, 'title', 'author', 'url')
+      await page.getByRole('button', { name: 'View'}).click()
+      await expect(page.getByRole('button', { name: 'Remove'})).toBeHidden()
+    })
+
   })
 
 })
