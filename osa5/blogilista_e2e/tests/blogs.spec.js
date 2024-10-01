@@ -53,6 +53,18 @@ describe('Blogi lista', () => {
       await expect(page.getByText('likes 1')).toBeVisible()
     })
 
+    test('a blog can be deleted', async ({ page }) => {
+      await createBlog(page, 'title', 'author', 'url')
+      await page.getByRole('button', { name: 'View'}).click()
+
+      await page.evaluate(() => {
+        window.confirm = () => true
+      })
+
+      await page.getByRole('button', { name: 'Remove'}).click()
+      await expect(page.getByText('removed blog title by author')).toBeVisible()
+    })
+
   })
 
 })
