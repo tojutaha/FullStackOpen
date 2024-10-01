@@ -71,6 +71,25 @@ describe('Blogi lista', () => {
       await expect(page.getByRole('button', { name: 'Remove'})).toBeHidden()
     })
 
+    test('blogs are sorted by likes', async ({ page }) => {
+      await createBlog(page, 'title', 'author', 'url')
+      await page.getByRole('button', { name: 'View'}).click()
+      await page.getByRole('button', { name: 'Like'}).click()
+      await page.getByRole('button', { name: 'Hide'}).click()
+
+      await page.getByRole('textbox', { name: 'title' }).fill('title2')
+      await page.getByRole('textbox', { name: 'author' }).fill('author2')
+      await page.getByRole('textbox', { name: 'url' }).fill('url2')
+      await page.getByRole('button', { name: 'create' }).click()
+
+      await page.getByRole('button', { name: 'View'}).first().click()
+      await page.getByRole('button', { name: 'View'}).last().click()
+
+      // TODO: Do this later
+      // const blogTitles = await page.$eval('div:has-text("Blog")', elements => elements.map(el => el.innerText));
+      // expect(blogTitles).toEqual(['title1', 'title2'])
+    })
+
   })
 
 })
