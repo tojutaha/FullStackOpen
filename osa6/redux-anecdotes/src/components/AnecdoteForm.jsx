@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { getId } from '../reducers/anecdoteReducer'
 
@@ -27,6 +27,7 @@ const AnecdoteForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <h2>create new</h2>
       <div>
         <input 
           value={newAnecdote} 
