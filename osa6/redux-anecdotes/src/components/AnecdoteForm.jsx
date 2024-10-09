@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { addNotification } from '../reducers/notificationReducer';
+import { setNotification } from '../reducers/notificationReducer';
 import { createAnecdote } from '../reducers/anecdoteReducer';
 
 const AnecdoteForm = () => {
@@ -11,11 +11,8 @@ const AnecdoteForm = () => {
     event.preventDefault()
     if (newAnecdote.trim()) {
       dispatch(createAnecdote(newAnecdote))
-      dispatch(addNotification(`Anecdote ${newAnecdote} added`))
+      dispatch(setNotification(`Anecdote ${newAnecdote} added`))
       setNewAnecdote('')
-      setTimeout(() => {
-        dispatch(addNotification(''))
-      }, 5000)
     }
   };
 
