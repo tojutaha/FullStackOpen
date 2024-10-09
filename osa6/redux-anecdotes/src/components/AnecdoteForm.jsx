@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { add, getId } from '../reducers/anecdoteReducer';
+import { addNotification } from '../reducers/notificationReducer';
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch()
@@ -14,7 +15,11 @@ const AnecdoteForm = () => {
         id: getId(),
         votes: 0,
       }))
+      dispatch(addNotification(`Anecdote ${newAnecdote} added`))
       setNewAnecdote('')
+      setTimeout(() => {
+        dispatch(addNotification(''))
+      }, 5000)
     }
   };
 
