@@ -1,26 +1,19 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { getId } from '../reducers/anecdoteReducer'
+import { add, getId } from '../reducers/anecdoteReducer';
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch()
   const [newAnecdote, setNewAnecdote] = useState('')
 
-  const addAnecdote = (content) => {
-    return {
-      type: 'ADD',
-      payload: {
-        content,
-        id: getId(),
-        votes: 0
-      }
-    }
-  }
-
   const handleSubmit = (event) => {
     event.preventDefault()
     if (newAnecdote.trim()) {
-      dispatch(addAnecdote(newAnecdote))
+      dispatch(add({
+        content: newAnecdote,
+        id: getId(),
+        votes: 0,
+      }))
       setNewAnecdote('')
     }
   };
