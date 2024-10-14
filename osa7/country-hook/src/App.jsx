@@ -31,7 +31,7 @@ const useCountry = (name) => {
           }
           // console.log(data)
           setCountry({found: true, data })
-          console.log(response.data)
+          // console.log(response.data)
         }
       })
       .catch((error) => {
