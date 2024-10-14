@@ -1,6 +1,5 @@
 import ReactDOM from 'react-dom/client'
 import { useState } from 'react'
-import { Table, Form, Button, Alert, Navbar, Nav } from 'react-bootstrap'
 
 import {
   BrowserRouter as Router,
@@ -12,6 +11,21 @@ import {
   useNavigate,
   useMatch,
 } from "react-router-dom"
+
+import {
+  Container,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper,
+  TextField,
+  Button,
+  AppBar,
+  Toolbar,
+  Alert
+} from '@mui/material'
 
 
 const Home = () => (
@@ -34,22 +48,23 @@ const Note = ({ note }) => {
 const Notes = ({ notes }) => (
   <div>
     <h2>Notes</h2>
-    <Table striped>
-      <tbody>
-        {notes.map(note =>
-          <tr key={note.id}>
-            <td>
-              <Link to={`/notes/${note.id}`}>
-                {note.content}
-              </Link>
-            </td>
-            <td>
-              {note.user}
-            </td>
-          </tr>
-        )}
-      </tbody>
-    </Table>
+
+    <TableContainer component={Paper}>
+      <Table>
+        <TableBody>
+          {notes.map(note => (
+            <TableRow key={note.id}>
+              <TableCell>
+                <Link to={`/notes/${note.id}`}>{note.content}</Link>
+              </TableCell>
+              <TableCell>
+                {note.name}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   </div>
 )
 
@@ -76,24 +91,19 @@ const Login = (props) => {
   return (
     <div>
       <h2>login</h2>
-      <Form onSubmit={onSubmit}>
-        <Form.Group>
-          <Form.Label>username:</Form.Label>
-          <Form.Control
-            type="text"
-            name="username"
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>password:</Form.Label>
-          <Form.Control
-            type="password"
-          />
-        </Form.Group>
-        <Button variant="primary" type="submit">
-          login
-        </Button>
-      </Form>
+      <form onSubmit={onSubmit}>
+        <div>
+          <TextField label="username" />
+        </div>
+        <div>
+          <TextField label="password" type='password' />
+        </div>
+        <div>
+          <Button variant="contained" color="primary" type="submit">
+            login
+          </Button>
+        </div>
+      </form>
     </div>
   )
 }
@@ -139,48 +149,46 @@ const App = () => {
   }
 
   return (
-    <div className='container'>
-      {(message &&
-        <Alert variant='success'>
-          {message}
-        </Alert>
-      )}
-
-      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="mr-auto">
-            <Nav.Link href="#" as="span">
-              <Link style={padding} to="/">home</Link>
-            </Nav.Link>
-            <Nav.Link href="#" as="span">
-              <Link style={padding} to="/notes">notes</Link>
-            </Nav.Link>
-            <Nav.Link href="#" as="span">
-              <Link style={padding} to="/users">users</Link>
-            </Nav.Link>
-            <Nav.Link href="#" as="span">
-              {user
-                ? <em>{user} logged in</em>
-                : <Link to="/login">login</Link>
-              }
-            </Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+    <Container>
+      <div>
+        {(message &&
+          <Alert severity="success">
+            {message}
+          </Alert>
+        )}
+      </div>
+      <AppBar position="static">
+        <Toolbar>
+          <Button color="inherit" component={Link} to="/">
+            home
+          </Button>
+          <Button color="inherit" component={Link} to="/notes">
+            notes
+          </Button>
+          <Button color="inherit" component={Link} to="/users">
+            users
+          </Button>
+          {user
+            ? <em>{user} logged in</em>
+            : <Button color="inherit" component={Link} to="/login">
+              login
+            </Button>
+          }
+        </Toolbar>
+      </AppBar>
 
       <Routes>
-          <Route path="/notes/:id" element={<Note note={note} />} />
-          <Route path="/notes" element={<Notes notes={notes} />} />
-          <Route path="/users" element={user ? <Users /> : <Navigate replace to="/login" />} />
-          <Route path="/login" element={<Login onLogin={login} />} />
-          <Route path="/" element={<Home />} />
-        </Routes>
+        <Route path="/notes/:id" element={<Note note={note} />} />
+        <Route path="/notes" element={<Notes notes={notes} />} />
+        <Route path="/users" element={user ? <Users /> : <Navigate replace to="/login" />} />
+        <Route path="/login" element={<Login onLogin={login} />} />
+        <Route path="/" element={<Home />} />
+      </Routes>
       <div>
         <br />
-        <em>Note app, Department of Computer Science 2023</em>
+        <em>Note app, Department of Computer Science 2022</em>
       </div>
-    </div>
+    </Container>
   )
 }
 
