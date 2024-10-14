@@ -10,6 +10,7 @@ import { initializeUser, loginUser, logoutUser } from './reducers/userReducer'
 import { setNotificationWithTimeout } from './reducers/notificationReducer'
 import UsersPage from './components/UsersPage'
 import UserDetailPage from './components/UserDetailPage'
+import BlogDetailPage from './components/BlogDetailPage'
 
 function App() {
   const dispatch = useDispatch()
@@ -98,6 +99,7 @@ function App() {
           />
           <Route path="/users" element={<UsersPage />} />
           <Route path="/users/:id" element={<UserDetailPage />} />
+          <Route path="/blogs/:id" element={<BlogDetailPage blogs={blogs} updateBlog={updateBlog} />} />
         </Routes>
       </div>
     </Router>

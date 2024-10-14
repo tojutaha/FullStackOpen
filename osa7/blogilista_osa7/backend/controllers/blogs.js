@@ -52,10 +52,32 @@ blogsRouter.delete(
 
 blogsRouter.put('/:id', async (request, response) => {
   const { id } = request.params
-  const updatedBlog = await Blog.findByIdAndUpdate(id, request.body, {
-    new: true,
-  })
-  response.json(updatedBlog)
+  const { title, author, url, likes, user } = request.body
+
+  // Validate input
+  if (typeof likes !== 'number') {
+    return response.status(400).json({ error: 'Likes must be a number' });
+  }
+
+  const updatedBlog = {
+    title,
+    author,
+    url,
+    likes,
+    user: user.id
+  }
+
+  try {
+    const updated = await Blog.findByIdAndUpdate(id, updatedBlog, { new: true })
+    if (!updated) {
+      return response.status(404).json({ error: 'Blog not found' })
+    }
+
+    response.json(updated)
+  } catch (error) {
+    console.error('Error updating blog:', error)
+    response.status(500).json({ error: 'Internal server error' })
+  }
 })
 
 module.exports = blogsRouter
