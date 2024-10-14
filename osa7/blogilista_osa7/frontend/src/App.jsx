@@ -1,13 +1,14 @@
 import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
-
 import { initializeBlogs, createBlog, likeBlog, removeBlog } from './reducers/blogReducer'
 import { initializeUser, loginUser, logoutUser } from './reducers/userReducer'
 import { setNotificationWithTimeout } from './reducers/notificationReducer'
+import UsersPage from './components/UsersPage'
 
 function App() {
   const dispatch = useDispatch()
@@ -21,7 +22,7 @@ function App() {
   }, [dispatch])
 
   useEffect(() => {
-    dispatch(initializeUser)
+    dispatch(initializeUser())
   }, [dispatch])
 
   const handleLogin = async (event) => {
@@ -56,37 +57,48 @@ function App() {
   }
 
   return (
-    <div>
-      <h1>Blogs</h1>
-      <Notification message={notification.message} notificationType={notification.type} />
+    <Router>
+      <div>
+        <h1>Blogs</h1>
+        <Notification message={notification.message} notificationType={notification.type} />
+        <nav>
+          <Link to="/">Home</Link> | <Link to="/users">Users</Link>
+        </nav>
 
-      {!user && (
-        <form onSubmit={handleLogin}>
-          <div>
-            username <input name="username" />
-          </div>
-          <div>
-            password <input name="password" type="password" />
-          </div>
-          <button type="submit">login</button>
-        </form>
-      )}
-
-      {user && (
-        <div>
-          {user.name} logged in
-          <button onClick={handleLogout}>logout</button>
-          <Togglable buttonLabel="Create new blog" ref={blogFormRef}>
-            <BlogForm createBlog={addNewBlog} />
-          </Togglable>
-          <div>
-            {blogs.map((blog) => (
-              <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user} />
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              user ? (
+                <div>
+                  {user.name} logged in
+                  <button onClick={handleLogout}>logout</button>
+                  <Togglable buttonLabel="Create new blog" ref={blogFormRef}>
+                    <BlogForm createBlog={addNewBlog} />
+                  </Togglable>
+                  <div>
+                    {blogs.map((blog) => (
+                      <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user} />
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <form onSubmit={handleLogin}>
+                  <div>
+                    username <input name="username" />
+                  </div>
+                  <div>
+                    password <input name="password" type="password" />
+                  </div>
+                  <button type="submit">login</button>
+                </form>
+              )
+            }
+          />
+          <Route path="/users" element={<UsersPage />} />
+        </Routes>
+      </div>
+    </Router>
   )
 }
 
