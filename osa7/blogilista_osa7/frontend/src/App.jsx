@@ -9,6 +9,7 @@ import { initializeBlogs, createBlog, likeBlog, removeBlog } from './reducers/bl
 import { initializeUser, loginUser, logoutUser } from './reducers/userReducer'
 import { setNotificationWithTimeout } from './reducers/notificationReducer'
 import UsersPage from './components/UsersPage'
+import UserDetailPage from './components/UserDetailPage'
 
 function App() {
   const dispatch = useDispatch()
@@ -96,6 +97,7 @@ function App() {
             }
           />
           <Route path="/users" element={<UsersPage />} />
+          <Route path="/users/:id" element={<UserDetailPage />} />
         </Routes>
       </div>
     </Router>
