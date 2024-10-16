@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
@@ -18,6 +18,7 @@ function App() {
   const user = useSelector((state) => state.user)
   const notification = useSelector((state) => state.notification)
   const blogFormRef = useRef()
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(initializeBlogs())
@@ -33,6 +34,7 @@ function App() {
       const credentials = { username: event.target.username.value, password: event.target.password.value }
       await dispatch(loginUser(credentials))
       dispatch(setNotificationWithTimeout('Successfully logged in', 'success', 5000))
+      navigate('/')
     } catch (exception) {
       dispatch(setNotificationWithTimeout('Wrong username or password', 'error', 5000))
     }
@@ -41,6 +43,7 @@ function App() {
   const handleLogout = () => {
     dispatch(logoutUser())
     dispatch(setNotificationWithTimeout('Logged out successfully', 'success', 5000))
+    navigate('/')
   }
 
   const addNewBlog = async (blogObject) => {
@@ -59,50 +62,68 @@ function App() {
   }
 
   return (
-    <Router>
-      <div>
-        <h1>Blogs</h1>
-        <Notification message={notification.message} notificationType={notification.type} />
-        <nav>
-          <Link to="/">Home</Link> | <Link to="/users">Users</Link>
-        </nav>
+    <div>
+      <nav>
+        <Link to="/">Home</Link> | <Link to="/users">Users</Link> |
+        {user ? (
+          <>
+            {user.name} logged in <button onClick={handleLogout}>logout</button>
+          </>
+        ) : (
+          <Link to="/login">Login</Link>
+        )}
+      </nav>
 
-        <Routes>
-          <Route
-            path="/"
-            element={
-              user ? (
+      <Notification message={notification.message} notificationType={notification.type} />
+      <h1>Blogs</h1>
+
+      <Routes>
+        <Route
+          path="/"
+          element={
+            user ? (
+              <div>
+                <Togglable buttonLabel="Create new blog" ref={blogFormRef}>
+                  <BlogForm createBlog={addNewBlog} />
+                </Togglable>
                 <div>
-                  {user.name} logged in
-                  <button onClick={handleLogout}>logout</button>
-                  <Togglable buttonLabel="Create new blog" ref={blogFormRef}>
-                    <BlogForm createBlog={addNewBlog} />
-                  </Togglable>
-                  <div>
-                    {blogs.map((blog) => (
-                      <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user} />
-                    ))}
-                  </div>
+                  {blogs.map((blog) => (
+                    <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user} />
+                  ))}
                 </div>
-              ) : (
-                <form onSubmit={handleLogin}>
-                  <div>
-                    username <input name="username" />
-                  </div>
-                  <div>
-                    password <input name="password" type="password" />
-                  </div>
-                  <button type="submit">login</button>
-                </form>
-              )
-            }
-          />
-          <Route path="/users" element={<UsersPage />} />
-          <Route path="/users/:id" element={<UserDetailPage />} />
-          <Route path="/blogs/:id" element={<BlogDetailPage blogs={blogs} updateBlog={updateBlog} />} />
-        </Routes>
-      </div>
-    </Router>
+              </div>
+            ) : (
+              <form onSubmit={handleLogin}>
+                <div>
+                  username <input name="username" />
+                </div>
+                <div>
+                  password <input name="password" type="password" />
+                </div>
+                <button type="submit">login</button>
+              </form>
+            )
+          }
+        />
+        <Route path="/users" element={<UsersPage />} />
+        <Route path="/users/:id" element={<UserDetailPage />} />
+        <Route path="/blogs/:id" element={<BlogDetailPage blogs={blogs} updateBlog={updateBlog} />} />
+        <Route
+          path="/login"
+          element={
+            <form onSubmit={handleLogin}>
+              <div>
+                username <input name="username" />
+              </div>
+              <div>
+                password <input name="password" type="password" />
+              </div>
+              <button type="submit">login</button>
+            </form>
+          }
+        />
+      </Routes>
+    </div>
   )
 }
 
