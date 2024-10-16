@@ -29,5 +29,35 @@ const calculateExercises = (dailyExercises: number[], target: number): Exercise 
     };
 }
 
-const result = calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2);
-console.log(result);
+const parseArguments = (args: string[]) => {
+    if(args.length <= 2) {
+        console.log('Usage: npm run calculateExercises [0, 1, 2, 3, ...]');
+        return;
+    }
+
+    const numbers = args.slice(2).map(arg => {
+        const num = Number(arg);
+        if(isNaN(num)) {
+            throw new Error(`Invalid number: ${arg}`)
+        }
+        return num;
+    })
+
+    return numbers;
+}
+
+try {
+    const args = parseArguments(process.argv);
+    const target = args[0];
+    const dailyExercises = args.slice(1);
+
+    const result = calculateExercises(dailyExercises, target);
+    console.log(result);
+}
+catch(error: unknown) {
+    let errorMsg = "Something went wrong."
+    if(error instanceof Error) {
+        errorMsg += "Error: " + error.message;
+    }
+    console.log(errorMsg);
+}
