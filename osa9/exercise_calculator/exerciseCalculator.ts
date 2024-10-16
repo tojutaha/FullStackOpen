@@ -27,7 +27,7 @@ const calculateExercises = (dailyExercises: number[], target: number): Exercise 
         target,
         average,
     };
-}
+};
 
 const parseArguments = (args: string[]) => {
     if(args.length <= 2) {
@@ -38,24 +38,27 @@ const parseArguments = (args: string[]) => {
     const numbers = args.slice(2).map(arg => {
         const num = Number(arg);
         if(isNaN(num)) {
-            throw new Error(`Invalid number: ${arg}`)
+            throw new Error(`Invalid number: ${arg}`);
         }
         return num;
-    })
+    });
 
     return numbers;
-}
+};
 
 try {
     const args = parseArguments(process.argv);
-    const target = args[0];
-    const dailyExercises = args.slice(1);
-
-    const result = calculateExercises(dailyExercises, target);
-    console.log(result);
+    if(args)
+    {
+        const target = args[0];
+        const dailyExercises = args.slice(1);
+    
+        const result = calculateExercises(dailyExercises, target);
+        console.log(result);
+    }
 }
 catch(error: unknown) {
-    let errorMsg = "Something went wrong."
+    let errorMsg = "Something went wrong.";
     if(error instanceof Error) {
         errorMsg += "Error: " + error.message;
     }
