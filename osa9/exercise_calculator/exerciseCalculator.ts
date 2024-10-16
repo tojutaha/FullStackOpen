@@ -8,7 +8,7 @@ interface Exercise {
     average: number,
 };
 
-const calculateExercises = (dailyExercises: number[], target: number): Exercise => {
+export const calculateExercises = (dailyExercises: number[], target: number): Exercise => {
     const trainingDays = dailyExercises.filter(day => day > 0).length;
     const average = dailyExercises.reduce((sum, day) => sum + day, 0) / dailyExercises.length;
 
@@ -46,21 +46,23 @@ const parseArguments = (args: string[]) => {
     return numbers;
 };
 
-try {
-    const args = parseArguments(process.argv);
-    if(args)
-    {
-        const target = args[0];
-        const dailyExercises = args.slice(1);
-    
-        const result = calculateExercises(dailyExercises, target);
-        console.log(result);
+if(require.main === module) {
+    try {
+        const args = parseArguments(process.argv);
+        if(args)
+        {
+            const target = args[0];
+            const dailyExercises = args.slice(1);
+        
+            const result = calculateExercises(dailyExercises, target);
+            console.log(result);
+        }
     }
-}
-catch(error: unknown) {
-    let errorMsg = "Something went wrong.";
-    if(error instanceof Error) {
-        errorMsg += "Error: " + error.message;
+    catch(error: unknown) {
+        let errorMsg = "Something went wrong.";
+        if(error instanceof Error) {
+            errorMsg += "Error: " + error.message;
+        }
+        console.log(errorMsg);
     }
-    console.log(errorMsg);
 }
