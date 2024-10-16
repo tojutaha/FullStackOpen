@@ -62,7 +62,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div className='container'>
       <nav>
         <Link to="/">Home</Link> | <Link to="/users">Users</Link> |
         {user ? (
