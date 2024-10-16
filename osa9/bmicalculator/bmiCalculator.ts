@@ -1,8 +1,7 @@
-
-const calculateBmi = (height: number, weight: number) => {
+export const calculateBmi = (height: number, weight: number): string => {
     // BMI = weight (in kg) / (height in cm / 100)²
     const bmi: number = weight / Math.pow((height / 100), 2);
-    let category: string;
+    let category: string = '';
 
     if(bmi < 16.0) {
         category = "Underweight (Severe thinness)";
@@ -31,11 +30,6 @@ interface Bmi {
 }
 
 const parseArguments = (args: string[]): Bmi => {
-    if(args.length <= 2) {
-        console.log("Usage: npm run calculateBmi [height] [weight]");
-        return;
-    }
-
     if(args.length < 4) throw new Error("Not enough arguments");
     if(args.length > 4) throw new Error("Too many arguments");
 
@@ -50,13 +44,15 @@ const parseArguments = (args: string[]): Bmi => {
     }
 }
 
-try {
-    const { height, weight } =  parseArguments(process.argv);
-    console.log(calculateBmi(height, weight));
-} catch (error: unknown) {
-    let errorMsg = "Something went wrong.";
-    if(error instanceof Error) {
-        errorMsg += "Error: " + error.message;
+if(require.main === module) {
+    try {
+        const { height, weight } = parseArguments(process.argv);
+        console.log(calculateBmi(height, weight));
+    } catch (error: unknown) {
+        let errorMsg = "Something went wrong.";
+        if (error instanceof Error) {
+            errorMsg += "Error: " + error.message;
+        }
+        console.log(errorMsg);
     }
-    console.log(errorMsg);
 }
