@@ -5,7 +5,7 @@ import diagnosesRouter from './src/routes/diagnosesRouter';
 import patientsRouter from './src/routes/patientsRouters';
 
 const app = express();
-// app.use(express.json());
+app.use(express.json());
 app.use(cors());
 
 const PORT = 3001;
