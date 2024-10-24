@@ -1,8 +1,6 @@
-import data from '../../data/patients';
-import { NewPatientEntry, Patient, NonSensitivePatientData } from '../../../frontend/src/types';
+import patients from '../../data/patients';
+import { NewPatientEntry, NonSensitivePatientData } from '../../../shared/types';
 import { v1 as uuid } from 'uuid';
-
-const patients: Patient[] = data as Patient[];
 
 const getPatients = () => {
   return patients;
