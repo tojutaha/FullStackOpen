@@ -1,8 +1,8 @@
 import patients from '../../data/patients';
-import { NewPatientEntry, NonSensitivePatientData } from '../../../shared/types';
+import { PatientEntry, NewPatientEntry, NonSensitivePatientData } from '../../../shared/types';
 import { v1 as uuid } from 'uuid';
 
-const getPatients = () => {
+const getPatients = (): PatientEntry[] => {
   return patients;
 };
 
@@ -16,7 +16,7 @@ const getNonSensitivePatientData = (): NonSensitivePatientData[] => {
   }));
 };
 
-const addPatient = (entry: NewPatientEntry): NewPatientEntry => {
+const addPatient = (entry: NewPatientEntry): PatientEntry => {
   const newPatientEntry = {
     id: uuid(),
     ...entry
