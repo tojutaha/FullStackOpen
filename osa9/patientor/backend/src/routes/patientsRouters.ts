@@ -2,13 +2,25 @@ import express, { Request, Response, NextFunction } from 'express';
 import patientsService from '../services/patientsService';
 import { z } from 'zod';
 import { NewPatientSchema } from '../utils';
-import { PatientEntry, NewPatientEntry } from '../../../shared/types';
+import { PatientEntry, NewPatientEntry, Patient } from '../../../shared/types';
+import patientEntries from '../../data/patients';
 
 const router = express.Router();
 
 router.get('/', (_req, res) => {
     // res.send(patientsService.getPatients());
     res.send(patientsService.getNonSensitivePatientData());
+});
+
+const findById = (id: string): PatientEntry | undefined => {
+    const entry = patientEntries.find(p => p.id === id);
+    return entry;
+};
+
+router.get('/:id', (req, res) => {
+    const patient = findById(req.params.id) as Patient;
+    // console.log(patient);
+    res.send(patient);
 });
 
 const newPatientParser = (req: Request, _res: Response, next: NextFunction) => {
