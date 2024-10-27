@@ -57,7 +57,7 @@ const PatientDetailsPage = () => {
                 <div>
                     <h3>{patient.name} {renderGender()} </h3>
                     <p>ssn: {patient.ssn}</p>
-                    <p>occupation = {patient.occupation}</p>
+                    <p>occupation: {patient.occupation}</p>
                 </div>
             ) : (
                 <p>Loading..</p>
