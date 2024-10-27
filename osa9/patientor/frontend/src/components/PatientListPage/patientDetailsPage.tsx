@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import patientService from '../../services/patients';
 import { Patient, Gender } from "../../../../shared/types";
-import { Icon } from "@mui/material";
 import { Male as MaleIcon, Female as FemaleIcon, Transgender as OtherIcon } from '@mui/icons-material';
 
 const PatientDetailsPage = () => {

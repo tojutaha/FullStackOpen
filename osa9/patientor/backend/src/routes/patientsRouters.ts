@@ -3,7 +3,7 @@ import patientsService from '../services/patientsService';
 import { z } from 'zod';
 import { NewPatientSchema } from '../utils';
 import { PatientEntry, NewPatientEntry, Patient } from '../../../shared/types';
-import patientEntries from '../../data/patients';
+import patients from '../../data/patients';
 
 const router = express.Router();
 
@@ -12,8 +12,8 @@ router.get('/', (_req, res) => {
     res.send(patientsService.getNonSensitivePatientData());
 });
 
-const findById = (id: string): PatientEntry | undefined => {
-    const entry = patientEntries.find(p => p.id === id);
+const findById = (id: string): Patient | undefined => {
+    const entry = patients.find(p => p.id === id);
     return entry;
 };
 
