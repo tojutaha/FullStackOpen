@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+// import { Weather, Visibility } from '../../backend/src/types';
 import axios from 'axios';
 
 interface Diary {
@@ -10,7 +11,7 @@ interface Diary {
 }
 
 function App() {
-  // const [newDiary, setNewDiary] = useState('');
+  const [newDiary, setNewDiary] = useState('');
   const [diaries, setDiaries] = useState<Diary[]>([]);
 
   useEffect(() => {
@@ -19,9 +20,28 @@ function App() {
     })
   })
 
+  const diaryCreation = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    const diaryToAdd = {
+      date: '2024-10-26',
+      weather: 'sunny',
+      visibility: 'good',
+      comment: 'this is a test'
+    }
+
+    setDiaries(diaries.concat(diaryToAdd));
+    setNewDiary('');
+  }
+
   return (
     <div>
-      <h1>Diary entries</h1>
+      <h2>Add new entry</h2>
+      <form onSubmit={diaryCreation}>
+        <input value={newDiary} onChange={(event) => setNewDiary(event.target.value)} />
+        <button type='submit'>add</button>
+      </form>
+
+      <h2>Diary entries</h2>
       <ul>
         {diaries.map(diary => (
           <li key={diary.id}>
