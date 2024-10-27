@@ -1,43 +1,58 @@
 import { useState, useEffect } from 'react'
-// import { Weather, Visibility } from '../../backend/src/types';
-import axios from 'axios';
-
-interface Diary {
-  id: number,
-  date: string,
-  weather: string,
-  visibility: string,
-  comment?: string,
-}
+import { DiaryEntry, NewDiaryEntry, Weather, Visibility } from '../../backend/src/types';
+import diaryService from '../../backend/src/services/diaryService';
 
 function App() {
-  const [newDiary, setNewDiary] = useState('');
-  const [diaries, setDiaries] = useState<Diary[]>([]);
+  const [date, setDate] = useState('2024-10-27');
+  const [weather, setWeather] = useState<Weather>(Weather.Sunny);
+  const [visibility, setVisibility] = useState<Visibility>(Visibility.Good);
+  const [comment, setComment] = useState('No comment');
+  const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
 
   useEffect(() => {
-    axios.get<Diary[]>('http://localhost:3000/api/diaries').then((response) => {
-      setDiaries(response.data);
-    })
-  })
+    setDiaries(diaryService.getEntries());
+  }, [])
 
-  const diaryCreation = (event: React.SyntheticEvent) => {
+  const diaryCreation = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    const diaryToAdd = {
-      date: '2024-10-26',
-      weather: 'sunny',
-      visibility: 'good',
-      comment: 'this is a test'
-    }
+    const diaryToAdd: NewDiaryEntry = {
+      date,
+      weather,
+      visibility,
+      comment,
+    };
 
-    setDiaries(diaries.concat(diaryToAdd));
-    setNewDiary('');
+    // console.log(diaryToAdd);
+
+    await diaryService.addDiary(diaryToAdd);
+    // const result = await diaryService.addDiary(diaryToAdd);
+    // setDiaries([...diaries, result]);
+    setDate("");
+    setWeather(Weather.Sunny);
+    setVisibility(Visibility.Good);
+    setComment("");
   }
 
   return (
     <div>
       <h2>Add new entry</h2>
       <form onSubmit={diaryCreation}>
-        <input value={newDiary} onChange={(event) => setNewDiary(event.target.value)} />
+        <div>
+          <label>Date: </label>
+          <input value={date} onChange={(e) => setDate(e.target.value)} />
+        </div>
+        <div>
+          <label>Visibility: </label>
+          <input value={visibility} onChange={(e) => setVisibility(e.target.value as Visibility)} />
+        </div>
+        <div>
+          <label>Weather: </label>
+          <input value={weather} onChange={(e) => setWeather(e.target.value as Weather)} />
+        </div>
+        <div>
+          <label>Comment: </label>
+          <input value={comment} onChange={(e) => setComment(e.target.value)} />
+        </div>
         <button type='submit'>add</button>
       </form>
 
