@@ -1,8 +1,8 @@
 import patients from '../../data/patients';
-import { PatientEntry, NewPatientEntry, NonSensitivePatientData } from '../../../shared/types';
+import { Patient, PatientEntry, NewPatientEntry, NonSensitivePatientData } from '../../../shared/types';
 import { v1 as uuid } from 'uuid';
 
-const getPatients = (): PatientEntry[] => {
+const getPatients = (): Patient[] => {
   return patients;
 };
 
@@ -22,7 +22,7 @@ const addPatient = (entry: NewPatientEntry): PatientEntry => {
     ...entry
   };
 
-  patients.push(newPatientEntry);
+  patients.push(newPatientEntry as Patient);
   return newPatientEntry;
 };
 

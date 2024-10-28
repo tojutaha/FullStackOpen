@@ -38,7 +38,7 @@ interface HospitalEntry extends BaseEntry {
 interface OccupationalHealthcareEntry extends BaseEntry {
   type: "OccupationalHealthcare";
   employerName: string;
-  sickLeave: {
+  sickLeave?: {
     startDate: string;
     endDate: string;
   };
@@ -68,7 +68,8 @@ export interface Patient {
 // type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
 // type EntryWithoutId = UnionOmit<Entry, 'id'>;
 
-export type NonSensitivePatientData = Omit<PatientEntry, 'ssn' | 'entries'>;
+// export type NonSensitivePatientData = Omit<PatientEntry, 'ssn' | 'entries'>;
+export type NonSensitivePatientData = Omit<Patient, 'ssn' | 'entries'>;
 export type PatientFormValues = Omit<Patient, 'id' | 'entries'>;
 export type NewPatientEntry = z.infer<typeof NewPatientSchema>;
 export interface PatientEntry extends NewPatientEntry {
