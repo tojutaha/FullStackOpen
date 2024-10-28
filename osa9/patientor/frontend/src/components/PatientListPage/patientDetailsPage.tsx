@@ -1,13 +1,15 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import patientService from '../../services/patients';
-import { Patient, Gender } from "../../../../shared/types";
+import { Patient, Gender, Diagnosis } from "../../../../shared/types";
 import { Male as MaleIcon, Female as FemaleIcon, Transgender as OtherIcon } from '@mui/icons-material';
+import getDiagnose from "../../services/diagnosesService";
 
 const PatientDetailsPage = () => {
 
   const { id } = useParams();
   const [patient, setPatient] = useState<Patient | null>(null);
+  const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -15,7 +17,20 @@ const PatientDetailsPage = () => {
       try {
         if (id) {
           const patient = await patientService.getPatient(id);
-          setPatient(patient);
+          if(patient) {
+            setPatient(patient);
+
+            const allDiagnosisCodes = patient.entries.flatMap(entry => entry.diagnosisCodes || []);
+            // const uniqueDiagnosisCodes = [...new Set(allDiagnosisCodes)];
+            // const diagnosesData = await Promise.all(
+            //   uniqueDiagnosisCodes.map(code => getDiagnose(code))
+            // );
+            const diagnosesData = await Promise.all(
+              allDiagnosisCodes.map(code => getDiagnose(code))
+            );
+
+            setDiagnoses(diagnosesData);
+          }
         }
       } catch (error: unknown) {
         let errorMessage = "Something went wrong.";
@@ -28,6 +43,8 @@ const PatientDetailsPage = () => {
 
     fetchPatient();
   }, [id]);
+
+  // console.log(diagnoses);
 
   if (error) {
     return (
@@ -60,13 +77,18 @@ const PatientDetailsPage = () => {
           <h3>entries: </h3>
           <ul>
             {patient.entries && patient.entries.length > 0 && patient.entries.map((entry) => (
-              <div>
+              <div key={entry.id}>
                 <p>{entry.date} <i>{entry.description}</i></p>
                 {entry.diagnosisCodes && entry.diagnosisCodes.length > 0 && (
                   <ul>
-                    {entry.diagnosisCodes.map((code) => (
-                      <li key={code}>{code}</li>
-                    ))}
+                    {entry.diagnosisCodes.map((code) => {
+                      const diagnosis = diagnoses.find(d => d.code === code);
+                      return (
+                        <li key={code}>
+                          {code} {diagnosis ? ` ${diagnosis.name}` : ''}
+                          </li>
+                      );
+                    })}
                   </ul>
                 )}
               </div>
