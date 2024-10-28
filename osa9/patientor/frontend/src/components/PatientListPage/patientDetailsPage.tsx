@@ -3,7 +3,9 @@ import { useState, useEffect } from "react";
 import patientService from '../../services/patients';
 import { Patient, Gender, Diagnosis } from "../../../../shared/types";
 import { Male as MaleIcon, Female as FemaleIcon, Transgender as OtherIcon } from '@mui/icons-material';
+import { Button } from "@mui/material";
 import getDiagnose from "../../services/diagnosesService";
+import EntryDetails from "./EntryDetails";
 
 const PatientDetailsPage = () => {
 
@@ -21,10 +23,6 @@ const PatientDetailsPage = () => {
             setPatient(patient);
 
             const allDiagnosisCodes = patient.entries.flatMap(entry => entry.diagnosisCodes || []);
-            // const uniqueDiagnosisCodes = [...new Set(allDiagnosisCodes)];
-            // const diagnosesData = await Promise.all(
-            //   uniqueDiagnosisCodes.map(code => getDiagnose(code))
-            // );
             const diagnosesData = await Promise.all(
               allDiagnosisCodes.map(code => getDiagnose(code))
             );
@@ -76,24 +74,13 @@ const PatientDetailsPage = () => {
           <p>occupation: {patient.occupation}</p>
           <h3>entries: </h3>
           <ul>
-            {patient.entries && patient.entries.length > 0 && patient.entries.map((entry) => (
-              <div key={entry.id}>
-                <p>{entry.date} <i>{entry.description}</i></p>
-                {entry.diagnosisCodes && entry.diagnosisCodes.length > 0 && (
-                  <ul>
-                    {entry.diagnosisCodes.map((code) => {
-                      const diagnosis = diagnoses.find(d => d.code === code);
-                      return (
-                        <li key={code}>
-                          {code} {diagnosis ? ` ${diagnosis.name}` : ''}
-                          </li>
-                      );
-                    })}
-                  </ul>
-                )}
-              </div>
+            {patient.entries && patient.entries.map((entry) => (
+              <EntryDetails key={entry.id} entry={entry} />
             ))}
           </ul>
+          <form>
+            <Button type="submit" variant="contained">ADD NEW ENTRY</Button>
+          </form>
         </div>
       ) : (
         <p>Loading..</p>
