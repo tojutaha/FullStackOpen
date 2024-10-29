@@ -30,7 +30,7 @@ const HospitalEntrySchema = BaseEntrySchema.extend({
       message: "Invalid date format",
     }),
     criteria: z.string(),
-  }),
+  }).optional(),
 });
 
 const OccupationalHealthcareEntrySchema = BaseEntrySchema.extend({

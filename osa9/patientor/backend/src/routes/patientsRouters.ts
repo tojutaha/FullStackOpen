@@ -9,7 +9,6 @@ import patients from '../../data/patients';
 const router = express.Router();
 
 router.get('/', (_req, res) => {
-    // res.send(patientsService.getPatients());
     res.send(patientsService.getNonSensitivePatientData());
 });
 
@@ -20,7 +19,6 @@ const findById = (id: string): Patient | undefined => {
 
 router.get('/:id', (req, res) => {
     const patient = findById(req.params.id) as Patient;
-    // console.log(patient);
     res.send(patient);
 });
 
@@ -31,7 +29,6 @@ router.get('/:id/entries', (req, res) => {
 
 router.post('/:id/entries', (req: Request<{ id: string }>, res: Response) => {
     const patient = findById(req.params.id) as Patient;
-    // console.log(patient);
 
     if(!patient) {
         res.status(404).send({error: 'Patient not found'});
@@ -39,9 +36,9 @@ router.post('/:id/entries', (req: Request<{ id: string }>, res: Response) => {
 
     const newEntry = EntrySchema.parse(req.body);
     const entryWithId = { ...newEntry, id: uuid() };
-    // console.log(newEntry);
-    // console.log(entryWithId);
+
     patient.entries.push(entryWithId);
+
     res.status(201).json(entryWithId);
 });
 

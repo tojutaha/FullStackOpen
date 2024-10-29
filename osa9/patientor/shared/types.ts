@@ -29,9 +29,9 @@ export enum HealthCheckRating {
 
 interface HospitalEntry extends BaseEntry {
   type: "Hospital";
-  discharge: {
-    date: string;
-    criteria: string;
+  discharge?: {
+    date?: string;
+    criteria?: string;
   };
 }
 
@@ -65,8 +65,8 @@ export interface Patient {
   entries: Entry[];
 }
 
-// type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
-// type EntryWithoutId = UnionOmit<Entry, 'id'>;
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+export type EntryWithoutId = UnionOmit<Entry, 'id'>;
 
 // export type NonSensitivePatientData = Omit<PatientEntry, 'ssn' | 'entries'>;
 export type NonSensitivePatientData = Omit<Patient, 'ssn' | 'entries'>;
