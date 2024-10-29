@@ -37,6 +37,9 @@ router.post('/:id/entries', (req: Request<{ id: string }>, res: Response) => {
     const newEntry = EntrySchema.parse(req.body);
     const entryWithId = { ...newEntry, id: uuid() };
 
+    // console.log("newEntry", newEntry);
+    // console.log("entryWithID", entryWithId);
+
     patient.entries.push(entryWithId);
 
     res.status(201).json(entryWithId);
@@ -60,7 +63,9 @@ const errorMiddleware = (error: unknown, _req: Request, res: Response, next: Nex
 };
 
 router.post('/', newPatientParser, (req: Request<unknown, unknown, NewPatientEntry>, res: Response<PatientEntry>) => {
-    const addedEntry = patientsService.addPatient(req.body);
+    const patientData = { ...req.body, entries: []};
+    // const addedEntry = patientsService.addPatient(req.body);
+    const addedEntry = patientsService.addPatient(patientData);
     res.json(addedEntry);
 });
 

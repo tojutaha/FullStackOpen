@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { apiBaseUrl } from '../constants';
-import { EntryWithoutId } from '../../../shared/types';
+import { EntryWithoutId, Diagnosis } from '../../../shared/types';
+
+const getAllDiagnoses = async (): Promise<Diagnosis[]> => {
+  const { data } = await axios.get<Diagnosis[]>(`${apiBaseUrl}/diagnoses`);
+  return data;
+};
 
 const getDiagnose = async (code: string) => {
     const { data } = await axios.get(`${apiBaseUrl}/diagnoses/${code}`);
@@ -13,6 +18,7 @@ const addEntry = async (id: string, entryData: EntryWithoutId) => {
 };
 
 export default {
-     getDiagnose,
-     addEntry,
+  getAllDiagnoses,
+  getDiagnose,
+  addEntry,
 };
