@@ -1,17 +1,17 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import patientService from '../../services/patients';
-import { Patient, Gender, Diagnosis } from "../../../../shared/types";
+import { Patient, Gender, /*Diagnosis*/ } from "../../../../shared/types";
 import { Male as MaleIcon, Female as FemaleIcon, Transgender as OtherIcon } from '@mui/icons-material';
 import { Button } from "@mui/material";
-import getDiagnose from "../../services/diagnosesService";
+// import getDiagnose from "../../services/diagnosesService";
 import EntryDetails from "./EntryDetails";
 
 const PatientDetailsPage = () => {
 
   const { id } = useParams();
   const [patient, setPatient] = useState<Patient | null>(null);
-  const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
+  // const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -22,12 +22,12 @@ const PatientDetailsPage = () => {
           if(patient) {
             setPatient(patient);
 
-            const allDiagnosisCodes = patient.entries.flatMap(entry => entry.diagnosisCodes || []);
-            const diagnosesData = await Promise.all(
-              allDiagnosisCodes.map(code => getDiagnose(code))
-            );
+            // const allDiagnosisCodes = patient.entries.flatMap(entry => entry.diagnosisCodes || []);
+            // const diagnosesData = await Promise.all(
+            //   allDiagnosisCodes.map(code => getDiagnose(code))
+            // );
 
-            setDiagnoses(diagnosesData);
+            // setDiagnoses(diagnosesData);
           }
         }
       } catch (error: unknown) {

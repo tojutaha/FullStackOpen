@@ -1,8 +1,9 @@
 import express, { Request, Response, NextFunction } from 'express';
 import patientsService from '../services/patientsService';
 import { z } from 'zod';
-import { NewPatientSchema } from '../utils';
-import { PatientEntry, NewPatientEntry, Patient } from '../../../shared/types';
+import { v1 as uuid} from 'uuid';
+import { EntrySchema, NewPatientSchema } from '../utils';
+import { PatientEntry, NewPatientEntry, Patient, Diagnosis } from '../../../shared/types';
 import patients from '../../data/patients';
 
 const router = express.Router();
@@ -21,6 +22,45 @@ router.get('/:id', (req, res) => {
     const patient = findById(req.params.id) as Patient;
     // console.log(patient);
     res.send(patient);
+});
+
+router.get('/:id/entries', (req, res) => {
+    const patient = findById(req.params.id) as Patient;
+    res.send(patient.entries);
+});
+
+const parseDiagnosisCodes = (object: unknown): Array<Diagnosis['code']> =>  {
+  if (!object || typeof object !== 'object' || !('diagnosisCodes' in object)) {
+    // we will just trust the data to be in correct form
+    return [] as Array<Diagnosis['code']>;
+  }
+
+  return object.diagnosisCodes as Array<Diagnosis['code']>;
+};
+
+router.post('/:id/entries', (req: Request<{ id: string }>, res: Response) => {
+    const patient = findById(req.params.id) as Patient;
+    // console.log(patient);
+
+    if(!patient) {
+        res.status(404).send({error: 'Patient not found'});
+    }
+
+    const code = parseDiagnosisCodes(req.body);
+    if(code.length <= 0) {
+        res.status(404).json({ error: 'Invalid diagnose code.' });
+        return;
+    }
+
+    const newEntry = EntrySchema.parse(req.body);
+    const entryWithId = { ...newEntry, id: uuid() };
+    // console.log(newEntry);
+    // console.log(entryWithId);
+    patient.entries.push(entryWithId);
+    res.status(201).json(entryWithId);
+
+    // console.log(code);
+    // res.json(code);
 });
 
 const newPatientParser = (req: Request, _res: Response, next: NextFunction) => {
@@ -48,4 +88,3 @@ router.post('/', newPatientParser, (req: Request<unknown, unknown, NewPatientEnt
 router.use(errorMiddleware);
 
 export default router;
-
