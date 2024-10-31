@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, Pressable } from 'react-native';
+import { Text, View, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Link } from 'react-router-native';
 import Constants from 'expo-constants';
 
@@ -31,8 +31,10 @@ const Tab = ({ text, url }) => {
 
 const AppBar = () => {
   return (<View style={styles.container}>
+    <ScrollView horizontal>
       <Tab text='Repositories' url='/' />
       <Tab text='Sign in' url='/signin' />
+    </ScrollView>
   </View>);
 };
 
