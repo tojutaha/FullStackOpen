@@ -1,11 +1,17 @@
 import React from 'react';
+import { StatusBar } from 'react-native-web';
+import { NativeRouter } from 'react-router-native';
 import Main from './src/components/Main';
-import { AppRegistry, Platform } from "react-native";
-
-AppRegistry.registerComponent('main', () => App);
 
 const App = () => {
-  return <Main />;
-}
+  return (
+    <>
+      <NativeRouter>
+        <Main />
+      </NativeRouter>
+      <StatusBar style='auto'/>
+    </>
+  );
+};
 
 export default App;

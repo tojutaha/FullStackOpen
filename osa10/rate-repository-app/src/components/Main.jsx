@@ -1,13 +1,15 @@
 import React from 'react';
-// import Constants from 'expo-constants';
-import { Text, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { Route, Routes, Navigate } from 'react-router-native';
 import RepositoryList from './RepositoryList';
+import theme from '../theme';
 // import Text from './Text';
 import AppBar from './AppBar';
+import SignIn from './SignIn';
 
 const styles = StyleSheet.create({
   container: {
-    // marginTop: Constants.statusBarHeight,
+    backgroundColor: theme.colors.mainBackground,
     flexGrow: 1,
     flexShrink: 1,
   },
@@ -15,17 +17,13 @@ const styles = StyleSheet.create({
 
 const Main = () => {
   return (
-    //   <>
-    //       <Text>Simple text</Text>
-    //       <Text style={{ paddingBottom: 10 }}>Text with custom style</Text>
-    //       <Text fontWeight="bold" fontSize="subheading">
-    //           Bold subheading
-    //       </Text>
-    //       <Text color="textSecondary">Text with secondary color</Text>
-    //   </>
     <View style={styles.container}>
       <AppBar />
-      <RepositoryList />
+      <Routes>
+        <Route path='/' element={<RepositoryList />} />
+        <Route path='/signin' element={<SignIn />} />
+        <Route path='*' element={<Navigate to='/' replace />} />
+      </Routes>
     </View>
   );
 };
