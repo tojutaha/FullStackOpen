@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
   },
 });
 
+// eslint-disable-next-line react/prop-types
 const Text = ({ color, fontSize, fontWeight, style, ...props }) => {
   const textStyle = [
     styles.text,
