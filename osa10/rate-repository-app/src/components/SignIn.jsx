@@ -5,6 +5,7 @@ import { View, TextInput, StyleSheet } from "react-native-web";
 import { Pressable } from "react-native";
 import theme from "../theme";
 import * as yup from 'yup';
+import useSignIn from "../hooks/useSignIn";
 
 const styles = StyleSheet.create({
   inputText: {
@@ -36,6 +37,20 @@ const styles = StyleSheet.create({
 
 const SignIn = () => {
 
+  const [signIn] = useSignIn();
+
+  const onSubmit = async (values) => {
+    console.log(values);
+    const { username, password } = values;
+
+    try {
+      const { data } = await signIn({ username, password });
+      console.log(data);
+    } catch(e) {
+      console.log(e);
+    }
+  };
+
   const validationSchema = yup.object().shape({
     username: yup
       .string()
@@ -44,10 +59,6 @@ const SignIn = () => {
       .string()
       .required('Password is required'),
   });
-
-  const onSubmit = (values) => {
-    console.log(values);
-  };
 
   const initialValues = {
     username: '',
