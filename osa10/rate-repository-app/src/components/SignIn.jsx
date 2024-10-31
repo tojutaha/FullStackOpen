@@ -6,6 +6,7 @@ import { Pressable } from "react-native";
 import theme from "../theme";
 import * as yup from 'yup';
 import useSignIn from "../hooks/useSignIn";
+import { useNavigate } from "react-router-native";
 
 const styles = StyleSheet.create({
   inputText: {
@@ -37,15 +38,17 @@ const styles = StyleSheet.create({
 
 const SignIn = () => {
 
+  const navigate = useNavigate();
+
   const [signIn] = useSignIn();
 
   const onSubmit = async (values) => {
-    console.log(values);
     const { username, password } = values;
 
     try {
       const { data } = await signIn({ username, password });
       console.log(data);
+      navigate('/');
     } catch(e) {
       console.log(e);
     }
