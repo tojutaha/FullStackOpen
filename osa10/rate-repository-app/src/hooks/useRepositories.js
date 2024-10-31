@@ -12,7 +12,7 @@ const useRepositories = () => {
 
   const fetchRepositories = async () => {
     if(data && data.repositories ) {
-      console.log(data);
+      // console.log(data);
       setRepositories(data.repositories);
     }
   };
