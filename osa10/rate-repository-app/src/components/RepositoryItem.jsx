@@ -55,9 +55,9 @@ const styles = StyleSheet.create({
 });
 
 // eslint-disable-next-line react/prop-types
-const Tab = ({ text, number, id }) => (
+const Tab = ({ text, number, testID }) => (
   <View style={styles.tabStats}>
-    <Text testID={id} fontWeight="bold">{AbbreviateNumber(number)}</Text>
+    <Text testID={testID} fontWeight="bold">{AbbreviateNumber(number)}</Text>
     <Text>{text}</Text>
   </View>
 );
@@ -65,9 +65,9 @@ const Tab = ({ text, number, id }) => (
 // eslint-disable-next-line react/prop-types
 const RepositoryItem = ({ item }) => {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID='repositoryItem'>
       <View style={styles.header}>
-        <Image style={styles.tinyLogo} source={{ uri: item.ownerAvatarUrl }} />
+        {/* <Image style={styles.tinyLogo} source={{ uri: item.ownerAvatarUrl }} /> */}
         <View>
           <Text fontWeight='bold' testID='fullName'>{item.fullName}</Text>
           <Text testID='description'>{item.description}</Text>
@@ -82,7 +82,7 @@ const RepositoryItem = ({ item }) => {
         </View>
       </View>
 
-      <View style={styles.containerStats}>
+      <View style={styles.containerStats} testID='repositoryItem'>
         <Tab text='Stars' testID='stargazersCount' number={item.stargazersCount} />
         <Tab text='Forks' testID='forksCount' number={item.forksCount} />
         <Tab text='Reviews' testID='reviewCount' number={item.reviewCount} />
