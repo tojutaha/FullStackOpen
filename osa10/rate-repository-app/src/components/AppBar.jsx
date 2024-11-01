@@ -2,6 +2,8 @@ import React from 'react';
 import { Text, View, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Link } from 'react-router-native';
 import Constants from 'expo-constants';
+import { useQuery } from '@apollo/client';
+import { GET_AUTHORIZEDUSER } from '../graphql/queries';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,7 +23,12 @@ const styles = StyleSheet.create({
   }
 });
 
-const Tab = ({ text, url }) => {
+const Tab = ({ text, url, visible }) => {
+
+  if(!visible) {
+    return null;
+  }
+
   return (
     <Link to={url} component={Pressable}>
       <Text style={styles.text}>{text}</Text>
@@ -30,10 +37,19 @@ const Tab = ({ text, url }) => {
 };
 
 const AppBar = () => {
+
+  const { data } = useQuery(GET_AUTHORIZEDUSER, {
+    fetchPolicy: 'cache-and-network',
+  });
+
+  // console.log("DATA: ", data);
+  const loggedIn = data && data.me;
+
   return (<View style={styles.container}>
     <ScrollView horizontal>
-      <Tab text='Repositories' url='/' />
-      <Tab text='Sign in' url='/signin' />
+      <Tab text='Repositories' url='/' visible='true' />
+      <Tab text='Sign in' url='/signin' visible={!loggedIn} />
+      <Tab text='Sign out' url='/signout' visible={loggedIn} />
     </ScrollView>
   </View>);
 };
