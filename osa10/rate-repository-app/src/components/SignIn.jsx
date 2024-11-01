@@ -30,11 +30,51 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: '18',
+    fontSize: 18,
     fontWeight: 'bold',
-    texctAlig: 'center',
+    textAlign: 'center',
   }
 })
+
+// eslint-disable-next-line react/prop-types
+export const SignInContainer = ({formik}) => {
+  return (
+    <View testID='SignInContainer' style={{ backgroundColor: 'white', flex: 1 }}>
+      <View style={{ margin: 15 }}>
+        <TextInput testID="usernameInput"
+          style={[
+            styles.inputText,
+            formik.touched.username && formik.errors.username && styles.inputError
+          ]}
+          placeholder={formik.errors.username && formik.touched.username ? formik.errors.username : "Username"}
+          placeholderTextColor={formik.errors.username && formik.touched.username ? "red" : "grey"}
+          value={formik.values.username}
+          onChangeText={formik.handleChange('username')}
+          onBlur={formik.handleBlur('username')}
+          autoCapitalize="none"
+        />
+        <TextInput testID="passwordInput"
+          style={[
+            styles.inputText,
+            formik.touched.password && formik.errors.password && styles.inputError
+          ]}
+          placeholder={formik.errors.password && formik.touched.password ? formik.errors.password : "Password"}
+          placeholderTextColor={formik.errors.password && formik.touched.password ? "red" : "grey"}
+          secureTextEntry={true}
+          value={formik.values.password}
+          onChangeText={formik.handleChange('password')}
+          onBlur={formik.handleBlur('password')}
+          autoCapitalize="none"
+        />
+        <Pressable testID="submitButton"
+          style={styles.button}
+          onPress={formik.handleSubmit}>
+          <Text style={styles.buttonText}>Sign in</Text>
+        </Pressable>
+      </View>
+    </View>
+  );
+};
 
 const SignIn = () => {
 
@@ -68,6 +108,7 @@ const SignIn = () => {
     username: '',
     password: '',
   }
+
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -75,38 +116,7 @@ const SignIn = () => {
   });
 
   return (
-    <View style={{ backgroundColor: 'white', flex: 1 }}>
-      <View style={{ margin: 15 }}>
-        <TextInput
-          style={[
-            styles.inputText,
-            formik.touched.username && formik.errors.username && styles.inputError
-          ]}
-          placeholder={formik.errors.username && formik.touched.username ? formik.errors.username : "Username"}
-          placeholderTextColor={formik.errors.username && formik.touched.username ? "red" : "grey"}
-          value={formik.values.username}
-          onChangeText={formik.handleChange('username')}
-          onBlur={formik.handleBlur('username')}
-        />
-        <TextInput
-          style={[
-            styles.inputText,
-            formik.touched.password && formik.errors.password && styles.inputError
-          ]}
-          placeholder={formik.errors.password && formik.touched.password ? formik.errors.password : "Password"}
-          placeholderTextColor={formik.errors.password && formik.touched.password ? "red" : "grey"}
-          secureTextEntry
-          value={formik.values.password}
-          onChangeText={formik.handleChange('password')}
-          onBlur={formik.handleBlur('password')}
-        />
-        <Pressable
-          style={styles.button}
-          onPress={formik.handleSubmit}>
-          <Text style={styles.buttonText}>Sign in</Text>
-        </Pressable>
-      </View>
-    </View>
+    <SignInContainer formik={formik} />
   );
 };
 

@@ -66,20 +66,23 @@ const Tab = ({ text, number, testID }) => (
 const RepositoryItem = ({ item }) => {
   return (
     <View style={styles.container} testID='repositoryItem'>
+
       <View style={styles.header}>
-        <Image style={styles.tinyLogo} source={{ uri: item.ownerAvatarUrl }} />
-        <View>
-          <Text fontWeight='bold' testID='fullName'>{item.fullName}</Text>
-          <Text testID='description'>{item.description}</Text>
-          <Text
-            color='white'
-            fontWeight='bold'
-            style={[styles.languageLogo, { marginTop: 5 }]}
-            testID='language'
-          >
-            {item.language}
-          </Text>
-        </View>
+
+        {/* <Image style={styles.tinyLogo} source={{ uri: item.ownerAvatarUrl }} /> */}
+      </View>
+
+      <View>
+        <Text fontWeight='bold' testID='fullName'>{item.fullName}</Text>
+        <Text testID='description'>{item.description}</Text>
+        <Text
+          color='white'
+          fontWeight='bold'
+          style={[styles.languageLogo, { marginTop: 5 }]}
+          testID='language'
+        >
+          {item.language}
+        </Text>
       </View>
 
       <View style={styles.containerStats} testID='repositoryItem'>
@@ -88,6 +91,7 @@ const RepositoryItem = ({ item }) => {
         <Tab text='Reviews' testID='reviewCount' number={item.reviewCount} />
         <Tab text='Rating' testID='ratingAverage' number={item.ratingAverage} />
       </View>
+
     </View>
   );
 };
