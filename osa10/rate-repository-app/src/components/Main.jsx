@@ -21,7 +21,8 @@ const Main = () => {
     <View style={styles.container}>
       <AppBar />
       <Routes>
-        <Route path='/' element={<RepositoryList />} />
+        <Route path='/' element={<RepositoryList singleView={false}/>} />
+        <Route path='/repo/:id' element={<RepositoryList singleView={true}/>} />
         <Route path='/signin' element={<SignIn />} />
         <Route path='/signout' element={<SignOut />} />
         <Route path='*' element={<Navigate to='/' replace />} />

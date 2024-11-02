@@ -1,9 +1,10 @@
 import React from 'react';
 import Text from '../components/Text';
 import theme from '../theme';
-import { View, Image, StyleSheet } from 'react-native-web';
+import { View, Image, StyleSheet, Button } from 'react-native-web';
+import { Linking } from 'react-native';
 
-function AbbreviateNumber(number) {
+const AbbreviateNumber = (number) => {
   // none, thousand, million, billion, trillion, quadtrillion, quintillion, ...
   const abbreviations = ['', 'k', 'M', 'B', 'T', 'Q', 'QQ'];
 
@@ -15,7 +16,7 @@ function AbbreviateNumber(number) {
 
   const roundedNumber = index > 0 ? number.toFixed(1) : number.toFixed(0);
   return roundedNumber.toString() + abbreviations[index];
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -63,26 +64,23 @@ const Tab = ({ text, number, testID }) => (
 );
 
 // eslint-disable-next-line react/prop-types
-const RepositoryItem = ({ item }) => {
+const RepositoryItem = ({ item, singleView }) => {
   return (
     <View style={styles.container} testID='repositoryItem'>
-
       <View style={styles.header}>
-
-        {/* <Image style={styles.tinyLogo} source={{ uri: item.ownerAvatarUrl }} /> */}
-      </View>
-
-      <View>
-        <Text fontWeight='bold' testID='fullName'>{item.fullName}</Text>
-        <Text testID='description'>{item.description}</Text>
-        <Text
-          color='white'
-          fontWeight='bold'
-          style={[styles.languageLogo, { marginTop: 5 }]}
-          testID='language'
-        >
-          {item.language}
-        </Text>
+        <Image style={styles.tinyLogo} source={{ uri: item.ownerAvatarUrl }} />
+        <View>
+          <Text fontWeight='bold' testID='fullName'>{item.fullName}</Text>
+          <Text testID='description'>{item.description}</Text>
+          <Text
+            color='white'
+            fontWeight='bold'
+            style={[styles.languageLogo, { marginTop: 5 }]}
+            testID='language'
+          >
+            {item.language}
+          </Text>
+        </View>
       </View>
 
       <View style={styles.containerStats} testID='repositoryItem'>
@@ -91,7 +89,7 @@ const RepositoryItem = ({ item }) => {
         <Tab text='Reviews' testID='reviewCount' number={item.reviewCount} />
         <Tab text='Rating' testID='ratingAverage' number={item.ratingAverage} />
       </View>
-
+      {singleView ? <Button onPress={() => Linking.openURL(`https://www.github.com/${item.fullName}`)} title='Open in GitHub' /> : <></>}
     </View>
   );
 };
